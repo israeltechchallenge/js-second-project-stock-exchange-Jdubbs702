@@ -9,19 +9,30 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container-fluid">
-        <nav class="navbar navbar-light bg-light">
-            <form class="container-fluid">
-            <div class="input-group">
-                <input id="searchInput" type="text" class="form-control" placeholder="aa">
-                <button id="searchButton" class="btn btn-outline-warning" type="submit">Search</button>
-            </div>
-            </form>
-        </nav>
-        
-        <ul id="ulList" class="list-group-flush p-0"></ul>
-        
+    <div class="container-fluid my-container">
+        <div class="card mt-3 my-card">
+            <h5 class="card-title title" >The World's Most Awesome-est Stock Search Page </h5>
+                <nav class="navbar navbar-light bg-light">
+                    <form class="container-fluid">
+                    <div class="input-group">
+                        <input id="searchInput" type="text" class="form-control" placeholder="aa">
+                        <button id="searchButton" class="btn btn-outline-warning" type="submit">Search</button>
+                    </div>
+                    </form>
+                </nav>
+                <ul id="ulList" class="list-group-flush p-0"></ul>
+        </div>
     </div>
+
+    <!-- <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div> -->
 
     <script src="helpers.js"></script>
     <script src="logic.js"></script>

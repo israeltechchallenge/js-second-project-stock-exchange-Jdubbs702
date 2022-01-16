@@ -1,6 +1,12 @@
-.container {
-    margin-top: 200px
+.title{
+    text-align: center;
 }
+
+.my-card{
+    width: 50%;
+    margin: 0 auto;
+}
+
 .btn:hover {
     color: #fff
 }
@@ -18,6 +24,33 @@
 }
 a{
     text-decoration: none;
+}
+.positiveChange{
+    color: rgb(15, 223, 15);
+}
+.negativeChange{
+    color: rgb(175, 17, 28)
+}
+canvas {
+    background-color: rgb(215, 255, 191); 
+    width: 100%;
+    height: auto;
+  }
+
+.profile-container{
+    
+    padding: 40px;
+}
+.header-row{
+    align-items: center;
+    padding-bottom: 30px;
+}
+.company-link{
+    color: rgb(15, 223, 15);
+}
+.price-row{
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 
