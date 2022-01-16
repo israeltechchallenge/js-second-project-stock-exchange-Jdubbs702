@@ -29,35 +29,39 @@ function createlist(listObjects) {
 
 async function createLiElement(listObject, parent) {
   const { name, symbol } = listObject;
-  //await fetchProfile(symbol);
-  // const{image} = profileData;
-  // const stringToCompose2 = [
-  //   { type:"img", value: image},
-  // ];
+
+  await fetchProfile(symbol);
 
   const stringToCompose = [
     { type: "span", value: name },
     { type: "span", value: ` (${symbol})` },
   ];
+
+
+  const { profile } = profileData;//from fetchProfile 
+  console.log(profile);
+  const { image, changesPercentage } = profile;
+  console.log(image);
+
+
   const wrapper = document.createElement("li");
   wrapper.classList.add("list-group-item", "list-item");
   const anchor = document.createElement("a");
   anchor.href = `/company.html?symbol=${symbol}`;
-  //const profileImg = document.createElement("img");
-
-  // for (const object of stringToCompose2) {
-  //   const domElement = document.createElement(object.type);
-  //   updateResultInDom(domElement, object.value);
-  //   wrapper.append(profileImg);
-  // }
+  const profileImg = document.createElement("img");
+  profileImg.src = image;
+  profileImg.style.width = "25px";
+  const change = document.createElement("span");
+  change.innerHTML = changesPercentage;
 
   for (const object of stringToCompose) {
     const domElement = document.createElement(object.type);
     updateResultInDom(domElement, object.value);
+    wrapper.append(profileImg);
     anchor.append(domElement);
     wrapper.append(anchor);
+    wrapper.append(change);
   }
-
   parent.append(wrapper);
 }
 
@@ -70,15 +74,13 @@ async function fetchProfile(query) {
     data = await response.json();
     console.log(data);
     profileData = data;
-    createProfile(profileData);
-
   } catch (error) {
     console.error(error);
   }
 }
 
-function createProfile(responseObject){
-  const {profile} = responseObject;
+async function createProfile(responseObject) {
+  const { profile } = responseObject;
 
   const image = grabElement("image");
   image.src = "";
@@ -103,7 +105,7 @@ function createProfile(responseObject){
   changeInPercentage = profile.changesPercentage
   n = parseFloat(changeInPercentage).toFixed(2)
   change.innerHTML = "";
-  if(changeInPercentage >= 0){
+  if (changeInPercentage >= 0) {
     changePercentAsString = `(+${n}%)`
     change.innerHTML = changePercentAsString;
     change.classList.add("positiveChange")
@@ -116,8 +118,8 @@ function createProfile(responseObject){
 }
 
 
-async function fetchHistory(symbol){
-   const fetchURL = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/historical-price-full/${symbol}?serietype=line`
+async function fetchHistory(symbol) {
+  const fetchURL = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/historical-price-full/${symbol}?serietype=line`
   try {
     const response = await fetch(fetchURL);
     let data;
@@ -130,12 +132,12 @@ async function fetchHistory(symbol){
 }
 
 function getArray(responseObject) {
-  const {historical} = responseObject;
+  const { historical } = responseObject;
   console.log(historical);
   historical.sort((a, b) => (a.date > b.date) ? 1 : -1)
-  for (var i=0; i < historical.length ; ++i)
+  for (var i = 0; i < historical.length; ++i)
     xlabels.push(historical[i]["date"]);
-  for (var i=0; i < historical.length ; ++i)
+  for (var i = 0; i < historical.length; ++i)
     ylabels.push(historical[i]["close"]);
   console.log(xlabels);
 }

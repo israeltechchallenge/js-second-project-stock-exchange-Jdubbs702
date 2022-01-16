@@ -1,13 +1,14 @@
 let symbol2;
 const spinner = grabElement("thisChartRightHere");
-window.onload = function () {//get symbol and fetch URL with symbol
+window.onload = async function () {//get symbol and fetch URL with symbol
     try {
         const url_string = (window.location.href);
         const url = new URL(url_string);
         let symbol = url.searchParams.get("symbol");
         symbol2 = symbol;//send symbol to global scope
         console.log(symbol);
-        fetchProfile(symbol);
+        await fetchProfile(symbol);
+        await createProfile(profileData);
         chartIt();
     } catch (err) {
         console.log("Issues with Parsing URL Parameter's - " + err);
@@ -16,7 +17,7 @@ window.onload = function () {//get symbol and fetch URL with symbol
 
 const xlabels = [];
 const ylabels = [];
-async function chartIt(){
+async function chartIt() {
     spinner.classList.add("spinner-border")
     await fetchHistory(symbol2);
     spinner.classList.remove("spinner-border")
