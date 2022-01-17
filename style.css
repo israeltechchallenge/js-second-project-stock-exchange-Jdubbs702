@@ -1,9 +1,10 @@
 .title{
     text-align: center;
+    color: rgb(15, 223, 15);
 }
 
 .my-card{
-    width: 50%;
+    width: 70%;
     margin: 0 auto;
 }
 
@@ -12,19 +13,27 @@
 }
 .input-text:focus {
     box-shadow: 0px 0px 0px;
-    border-color: #f8c146;
+    border-color: #C82333;
     outline: 0px
 }
 .form-control {
-    border: 1px solid #f8c146
+    border: 1px solid #C82333
+}
+.list-item-container{
+    height: 60px;
 }
 .list-item{
-    align-items: center;
     font-size: 18px;
 	color: hsl(246, 75%, 63%);
 }
+.list-profile-img{
+    margin-right: 10px;
+    max-width: 100%;
+    height: auto;
+}
 a{
     text-decoration: none;
+    color: rgba(255, 99, 132, 1);
 }
 .positiveChange{
     color: rgb(15, 223, 15);
@@ -38,8 +47,7 @@ canvas {
     height: auto;
   }
 
-.profile-container{
-    
+.profile-container{  
     padding: 40px;
 }
 .header-row{
@@ -53,5 +61,10 @@ canvas {
     padding-top: 30px;
     padding-bottom: 30px;
 }
-
+.change-margin{
+    margin-left: 10px;
+}
+.header{
+    color:rgba(255, 99, 132, 1);
+}
 

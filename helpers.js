@@ -4,9 +4,9 @@ function grabElement(id) {
   else throw new Error(`Couldn't grab an element with ID: ${id}`);
 }
 
-function updateResultInDom(domElem, value) {
-  domElem.innerText = value;
-}
+// function updateResultInDom(domElem, value) {
+//   domElem.innerText = value;
+// }
 let data1;
 async function fetchServer(input) {
   const fetchURL = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/search?query=${input}&limit=10&exchange=NASDAQ`
@@ -32,37 +32,51 @@ async function createLiElement(listObject, parent) {
 
   await fetchProfile(symbol);
 
-  const stringToCompose = [
-    { type: "span", value: name },
-    { type: "span", value: ` (${symbol})` },
-  ];
-
+  // const stringToCompose = [
+  //   { type: "span", value: name },
+  //   { type: "span", value: ` (${symbol})` },
+  // ];
 
   const { profile } = profileData;//from fetchProfile 
   console.log(profile);
   const { image, changesPercentage } = profile;
   console.log(image);
 
+  const container = document.createElement("div");
+  container.classList.add("list-group-item");
 
-  const wrapper = document.createElement("li");
-  wrapper.classList.add("list-group-item", "list-item");
-  const anchor = document.createElement("a");
-  anchor.href = `/company.html?symbol=${symbol}`;
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("row", "row-col-3", "align-items-center", "list-item", "g-0");
+
   const profileImg = document.createElement("img");
   profileImg.src = image;
-  profileImg.style.width = "25px";
-  const change = document.createElement("span");
-  change.innerHTML = changesPercentage;
+  profileImg.style.width = "55px";
+  profileImg.classList.add("img-fluid", "d-flex", "col", "col-md-auto", "list-profile-img", "g-0");
 
-  for (const object of stringToCompose) {
-    const domElement = document.createElement(object.type);
-    updateResultInDom(domElement, object.value);
-    wrapper.append(profileImg);
-    anchor.append(domElement);
-    wrapper.append(anchor);
-    wrapper.append(change);
+  const anchor = document.createElement("a");
+  anchor.href = `/company.html?symbol=${symbol}`;
+  anchor.innerText = name.toUpperCase();
+  anchor.classList.add("d-flex", "col", "col-md-auto");
+
+  const change = document.createElement("span");
+  let n = parseFloat(changesPercentage).toFixed(2)
+  if (changesPercentage >= 0) {
+    change.innerHTML = `(+${n})`;
+    change.classList.add("d-flex", "col", "col-md-auto", "g-0", "positiveChange", "change-margin");
   }
-  parent.append(wrapper);
+  else {
+    change.innerHTML = `(${n})`;
+    change.classList.add("d-flex", "col", "col-md-auto", "g-0", "negativeChange", "change-margin");
+  }
+  // for (const object of stringToCompose) {
+  //   const domElement = document.createElement(object.type);
+  //   updateResultInDom(domElement, object.value);
+
+  //anchor.append(domElement);
+  container.append(wrapper);
+  wrapper.append(profileImg, anchor, change);
+  //}
+  parent.append(container);
 }
 
 let profileData;
@@ -85,6 +99,7 @@ async function createProfile(responseObject) {
   const image = grabElement("image");
   image.src = "";
   image.src = profile.image;
+  image.style.height = "40px";
 
   const name = grabElement("name");
   name.innerHTML = "";
