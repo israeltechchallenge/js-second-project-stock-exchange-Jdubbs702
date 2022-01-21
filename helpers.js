@@ -4,9 +4,6 @@ function grabElement(id) {
   else throw new Error(`Couldn't grab an element with ID: ${id}`);
 }
 
-// function updateResultInDom(domElem, value) {
-//   domElem.innerText = value;
-// }
 let data1;
 async function fetchServer(input) {
   const fetchURL = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/search?query=${input}&limit=10&exchange=NASDAQ`
@@ -21,26 +18,18 @@ async function fetchServer(input) {
   }
 }
 
-function createlist(listObjects) {
+function createlist(objectArray) {
   const ulList = grabElement("ulList");
   ulList.innerHTML = "";
-  for (let object of listObjects) createLiElement(object, ulList);
+  for (let object of objectArray) createLiElement(object, ulList);
 }
 
 async function createLiElement(listObject, parent) {
   const { name, symbol } = listObject;
 
   await fetchProfile(symbol);
-
-  // const stringToCompose = [
-  //   { type: "span", value: name },
-  //   { type: "span", value: ` (${symbol})` },
-  // ];
-
   const { profile } = profileData;//from fetchProfile 
-  console.log(profile);
   const { image, changesPercentage } = profile;
-  console.log(image);
 
   const container = document.createElement("div");
   container.classList.add("list-group-item");
@@ -50,7 +39,7 @@ async function createLiElement(listObject, parent) {
 
   const profileImg = document.createElement("img");
   profileImg.src = image;
-  profileImg.style.width = "55px";
+  profileImg.style.width = "70px";
   profileImg.classList.add("img-fluid", "d-flex", "col", "col-md-auto", "list-profile-img", "g-0");
 
   const anchor = document.createElement("a");
@@ -68,14 +57,8 @@ async function createLiElement(listObject, parent) {
     change.innerHTML = `(${n})`;
     change.classList.add("d-flex", "col", "col-md-auto", "g-0", "negativeChange", "change-margin");
   }
-  // for (const object of stringToCompose) {
-  //   const domElement = document.createElement(object.type);
-  //   updateResultInDom(domElement, object.value);
-
-  //anchor.append(domElement);
   container.append(wrapper);
   wrapper.append(profileImg, anchor, change);
-  //}
   parent.append(container);
 }
 
@@ -134,9 +117,9 @@ async function createProfile(responseObject) {
 
 
 async function fetchHistory(symbol) {
-  const fetchURL = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/historical-price-full/${symbol}?serietype=line`
+  const fetchUrl = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/historical-price-full/${symbol}?serietype=line`
   try {
-    const response = await fetch(fetchURL);
+    const response = await fetch(fetchUrl);
     let data;
     data = await response.json();
     console.log(data);
@@ -157,3 +140,57 @@ function getArray(responseObject) {
   console.log(xlabels);
 }
 
+let marqueeData;
+async function fetchMarqueeData() {
+  const fetchStockList = `https://financialmodelingprep.com/api/v3/stock/list?apikey=ab6a1123daae3cc55bfece5648bb601c`
+  try {
+    const response = await fetch(fetchStockList);
+    let data;
+    data = await response.json();
+    marqueeData = data;
+    console.log(marqueeData)
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+let nasdaqArray = [];
+const marqueeElement = document.createElement("div");
+const marquee = grabElement("myMarquee");
+//const marquee2 = grabElement("marquee2");
+
+async function createMarquee() {
+  await createNasdaqArray();
+  let shuffled = nasdaqArray.sort(() => 0.5 - Math.random());
+  shuffledArray = shuffled.slice(0, 50);
+  console.log(shuffledArray);
+  for (let object of shuffledArray) {
+    await createMArqueeElement(object);
+  }
+  console.log(marqueeElement);
+  marquee.append(marqueeElement);
+}
+async function createMArqueeElement(shuffArrayObject) {
+  const { symbol, price } = shuffArrayObject;
+
+  const symbolElement = document.createElement("span");
+  symbolElement.innerText = ` ${symbol} `;
+  symbolElement.style.marginLeft = "5px";
+
+  const priceElement = document.createElement("span");
+  priceElement.innerText = `($${price})`;
+  priceElement.classList.add("positiveChange");
+  marqueeElement.append(symbolElement, priceElement);
+}
+
+async function createNasdaqArray() {
+  await fetchMarqueeData();
+  for (let object of marqueeData)
+    if (object.exchangeShortName == "NASDAQ") {
+      nasdaqArray.push(object);
+    }
+}
+
+// function updateResultInDom(domElem, value) {
+//   domElem.innerText = value;
+// }

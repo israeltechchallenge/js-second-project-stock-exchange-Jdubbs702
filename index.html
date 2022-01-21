@@ -12,16 +12,22 @@
 </head>
 
 <body>
+
+    <div id="myMarquee" class="marquee"></div>
+
     <div class="container-fluid my-container">
+
         <div class="card mt-3 my-card">
-            <h2 class="card-title title">The World's Most Awesome-est Stock Search Page </h2>
+            <h2 class="card-title title">NASDAQ Stock Search Page </h2>
             <nav class="navbar navbar-light bg-light">
                 <form class="container-fluid">
                     <div class="input-group">
                         <input id="searchInput" type="text" class="form-control" placeholder="aa">
-                        <button id="searchButton" class="btn btn-outline-danger" type="submit">Search</button>
+                        <button id="searchButton" class="btn btn-outline-danger button-css" type="submit">
+                            <span id="searchSpinner"></span>
+                            <span class="search-text-css">Search</span>
+                        </button>
                     </div>
-                </form>
             </nav>
             <ul id="ulList" class="list-group-flush p-0"></ul>
         </div>
