@@ -1,5 +1,6 @@
 let symbol2;
 const spinner = grabElement("thisChartRightHere");
+const pageSpinner = grabElement("compContainer");
 window.onload = async function () {//get symbol and fetch URL with symbol
     try {
         const url_string = (window.location.href);
@@ -7,8 +8,10 @@ window.onload = async function () {//get symbol and fetch URL with symbol
         let symbol = url.searchParams.get("symbol");
         symbol2 = symbol;//send symbol to global scope
         console.log(symbol);
+        pageSpinner.classList.add("spinner-border")
         await fetchProfile(symbol);
         await createProfile(profileData);
+        pageSpinner.classList.remove("spinner-border")
         chartIt();
     } catch (err) {
         console.log("Issues with Parsing URL Parameter's - " + err);

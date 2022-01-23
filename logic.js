@@ -1,4 +1,7 @@
-createMarquee();
+const myMarquee = grabElement("myMarquee");
+const marquee = new Marquee(myMarquee);
+
+marquee.makeMarquee();
 
 const searchInput = grabElement("searchInput");
 const searchButton = grabElement("searchButton");

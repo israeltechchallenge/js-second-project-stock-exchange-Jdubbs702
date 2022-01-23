@@ -140,57 +140,6 @@ function getArray(responseObject) {
   console.log(xlabels);
 }
 
-let marqueeData;
-async function fetchMarqueeData() {
-  const fetchStockList = `https://financialmodelingprep.com/api/v3/stock/list?apikey=ab6a1123daae3cc55bfece5648bb601c`
-  try {
-    const response = await fetch(fetchStockList);
-    let data;
-    data = await response.json();
-    marqueeData = data;
-    console.log(marqueeData)
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-let nasdaqArray = [];
-const marqueeElement = document.createElement("div");
-const marquee = grabElement("myMarquee");
-//const marquee2 = grabElement("marquee2");
-
-async function createMarquee() {
-  await createNasdaqArray();
-  let shuffled = nasdaqArray.sort(() => 0.5 - Math.random());
-  shuffledArray = shuffled.slice(0, 50);
-  console.log(shuffledArray);
-  for (let object of shuffledArray) {
-    await createMArqueeElement(object);
-  }
-  console.log(marqueeElement);
-  marquee.append(marqueeElement);
-}
-async function createMArqueeElement(shuffArrayObject) {
-  const { symbol, price } = shuffArrayObject;
-
-  const symbolElement = document.createElement("span");
-  symbolElement.innerText = ` ${symbol} `;
-  symbolElement.style.marginLeft = "5px";
-
-  const priceElement = document.createElement("span");
-  priceElement.innerText = `($${price})`;
-  priceElement.classList.add("positiveChange");
-  marqueeElement.append(symbolElement, priceElement);
-}
-
-async function createNasdaqArray() {
-  await fetchMarqueeData();
-  for (let object of marqueeData)
-    if (object.exchangeShortName == "NASDAQ") {
-      nasdaqArray.push(object);
-    }
-}
-
 // function updateResultInDom(domElem, value) {
 //   domElem.innerText = value;
 // }
