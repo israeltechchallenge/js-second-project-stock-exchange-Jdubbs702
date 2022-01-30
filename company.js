@@ -9,7 +9,7 @@ window.onload = async function () {//get symbol and fetch URL with symbol
         symbol2 = symbol;//send symbol to global scope
         console.log(symbol);
         pageSpinner.classList.add("spinner-border")
-        await fetchProfile(symbol);
+        profileData = await getProfile(symbol);
         await createProfile(profileData);
         pageSpinner.classList.remove("spinner-border")
         chartIt();

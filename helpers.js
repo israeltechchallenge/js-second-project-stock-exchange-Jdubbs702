@@ -4,103 +4,60 @@ function grabElement(id) {
   else throw new Error(`Couldn't grab an element with ID: ${id}`);
 }
 
-let data1;
-async function fetchServer(input) {
-  const fetchURL = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/search?query=${input}&limit=10&exchange=NASDAQ`
+async function generalFetch(url) {
   try {
-    const response = await fetch(fetchURL);
+    const response = await fetch(url);
     let data;
     data = await response.json();
-    console.log(data)
-    data1 = data;
+    return data;
   } catch (error) {
     console.error(error);
   }
 }
 
-function createlist(objectArray) {
-  const ulList = grabElement("ulList");
-  ulList.innerHTML = "";
-  for (let object of objectArray) createLiElement(object, ulList);
+const baseUrl = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/`
+
+async function searchAndFetchProfile(query) {
+  const companies = await generalFetch(`${baseUrl}search?query=${query}&limit=10&exchange=NASDAQ`);
+  let companiesArray = [];
+  for (company of companies) {
+    if (company.symbol)
+      companiesArray.push(await getProfile(company.symbol))
+  }
+  return companiesArray;
 }
 
-async function createLiElement(listObject, parent) {
-  const { name, symbol } = listObject;
-
-  await fetchProfile(symbol);
-  const { profile } = profileData;//from fetchProfile 
-  const { image, changesPercentage } = profile;
-
-  const container = document.createElement("div");
-  container.classList.add("list-group-item");
-
-  const wrapper = document.createElement("div");
-  wrapper.classList.add("row", "row-col-3", "align-items-center", "list-item", "g-0");
-
-  const profileImg = document.createElement("img");
-  profileImg.src = image;
-  profileImg.style.width = "70px";
-  profileImg.classList.add("img-fluid", "d-flex", "col", "col-md-auto", "list-profile-img", "g-0");
-
-  const anchor = document.createElement("a");
-  anchor.href = `/company.html?symbol=${symbol}`;
-  anchor.innerText = name.toUpperCase();
-  anchor.classList.add("d-flex", "col", "col-md-auto");
-
-  const change = document.createElement("span");
-  let n = parseFloat(changesPercentage).toFixed(2)
-  if (changesPercentage >= 0) {
-    change.innerHTML = `(+${n})`;
-    change.classList.add("d-flex", "col", "col-md-auto", "g-0", "positiveChange", "change-margin");
-  }
-  else {
-    change.innerHTML = `(${n})`;
-    change.classList.add("d-flex", "col", "col-md-auto", "g-0", "negativeChange", "change-margin");
-  }
-  container.append(wrapper);
-  wrapper.append(profileImg, anchor, change);
-  parent.append(container);
-}
-
-let profileData;
-async function fetchProfile(query) {
-  const fetchURL = `https://stock-exchange-dot-full-stack-course-services.ew.r.appspot.com/api/v3/company/profile/${query}`
-  try {
-    const response = await fetch(fetchURL);
-    let data;
-    data = await response.json();
-    console.log(data);
-    profileData = data;
-  } catch (error) {
-    console.error(error);
-  }
+async function getProfile(symbol) {
+  const data = await generalFetch(`${baseUrl}company/profile/${symbol}`)
+  const profile = data.profile;
+  profile.symbol = symbol;
+  return profile;
 }
 
 async function createProfile(responseObject) {
-  const { profile } = responseObject;
-
   const image = grabElement("image");
   image.src = "";
-  image.src = profile.image;
+  image.src = responseObject.image;
   image.style.height = "40px";
 
   const name = grabElement("name");
   name.innerHTML = "";
-  name.innerHTML = profile.companyName;
+  name.innerHTML = responseObject.companyName;
 
   const link = grabElement("link");
-  link.href = profile.website;
+  link.innerText = "Go to Website";
+  link.href = responseObject.website;
 
   const description = grabElement("description");
   description.innerHTML = "";
-  description.innerHTML = profile.description;
+  description.innerHTML = responseObject.description;
 
   const price = grabElement("stockPrice");
   price.innerHTML = "";
-  price.innerHTML = `Stock Price: $${profile.price}`;
+  price.innerHTML = `Stock Price: $${responseObject.price}`;
 
   const change = grabElement("change");
-  changeInPercentage = profile.changesPercentage
+  changeInPercentage = responseObject.changesPercentage
   n = parseFloat(changeInPercentage).toFixed(2)
   change.innerHTML = "";
   if (changeInPercentage >= 0) {
@@ -122,7 +79,6 @@ async function fetchHistory(symbol) {
     const response = await fetch(fetchUrl);
     let data;
     data = await response.json();
-    console.log(data);
     getArray(data);
   } catch (error) {
     console.error(error);
@@ -131,15 +87,9 @@ async function fetchHistory(symbol) {
 
 function getArray(responseObject) {
   const { historical } = responseObject;
-  console.log(historical);
   historical.sort((a, b) => (a.date > b.date) ? 1 : -1)
   for (var i = 0; i < historical.length; ++i)
     xlabels.push(historical[i]["date"]);
   for (var i = 0; i < historical.length; ++i)
     ylabels.push(historical[i]["close"]);
-  console.log(xlabels);
 }
-
-// function updateResultInDom(domElem, value) {
-//   domElem.innerText = value;
-// }
