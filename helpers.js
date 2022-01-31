@@ -38,7 +38,7 @@ async function createProfile(responseObject) {
   const image = grabElement("image");
   image.src = "";
   image.src = responseObject.image;
-  image.style.height = "40px";
+  image.style.height = "50px";
 
   const name = grabElement("name");
   name.innerHTML = "";
@@ -63,12 +63,12 @@ async function createProfile(responseObject) {
   if (changeInPercentage >= 0) {
     changePercentAsString = `(+${n}%)`
     change.innerHTML = changePercentAsString;
-    change.classList.add("positiveChange")
+    change.classList.add("positive-change")
   }
   else {
     changePercentAsString = `(${n}%)`
     change.innerHTML = changePercentAsString;
-    change.classList.add("negativeChange")
+    change.classList.add("negative-change")
   }
 }
 

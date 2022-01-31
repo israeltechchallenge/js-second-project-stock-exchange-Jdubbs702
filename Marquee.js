@@ -26,7 +26,7 @@ class Marquee {
 
                     const priceElement = document.createElement("span");
                     priceElement.innerText = `($${price})`;
-                    priceElement.classList.add("positiveChange");
+                    priceElement.classList.add("positive-change");
 
                     this.marqueeElement.append(symbolElement, priceElement);
                 }

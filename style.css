@@ -36,10 +36,10 @@ a{
     text-decoration: none;
     color: rgba(255, 99, 132, 1);
 }
-.positiveChange{
+.positive-change{
     color: rgb(15, 223, 15);
 }
-.negativeChange{
+.negative-change{
     color: rgb(175, 17, 28)
 }
 canvas {
@@ -98,4 +98,19 @@ canvas {
 .marquee div.repeated{
     display: inline-block;
     animation-delay: 20s;
+}
+
+.highlight{
+    color:rgba(255, 99, 132, 1);
+    background-color: rgb(15, 223, 15, 0.3);
+    padding: 0;
+    padding: auto;
+    
+}
+.my-anchor{
+    display: inline-block;
+    align-items: center;
+}
+.stock-price-change{
+    padding-left: 4px;
 }

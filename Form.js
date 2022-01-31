@@ -18,6 +18,7 @@ class SearchForm {
         domElement.append(inputGroupDiv);
 
         searchButton.onclick = () => this.performSearch();
+        this.searchInput.onclick = () => this.searchInput.value = "";
         this.searchInput.addEventListener("keyup", function (event) {
             if (event.key === "Enter") {
                 event.preventDefault();
